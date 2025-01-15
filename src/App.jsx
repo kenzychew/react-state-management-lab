@@ -106,10 +106,29 @@ const App = () => {
     setMoney(money - fighter.price);
   }
 
+  const handleRemoveFighter = (fighter) => {
+    // Remove fighter from team
+    setTeam(team.filter(tZF => tZF.id !== fighter.id));
+    // Add fighter to zombieFighters
+    setZombieFighters([...zombieFighters, fighter]);
+    // Refund money
+    setMoney(money + fighter.price);
+  }
+
+  // Calculate team's total strength
+  const totalStrength = team.reduce((sum, fighter) => sum + fighter.strength, 0);
+
+  // Calculate team's total agility
+  const totalAgility = team.reduce((sum, fighter) => sum + fighter.agility, 0);
+
 
   return (                
     <>
-      <h2>Money: {money}</h2>
+      <h2>Money: ${money}</h2>
+
+      <h2>Team Strength: {totalStrength}</h2>
+
+      <h2>Team Agility: {totalAgility}</h2>
 
       <h2>Team</h2>
       {team.length === 0 ?
@@ -120,9 +139,10 @@ const App = () => {
               <li key={fighter.id}>
                 <img src={fighter.img} alt={fighter.name} />
                 <h3>{fighter.name}</h3>
-                <p>Price: ${fighter.price}</p>
-                <p>Strength: ${fighter.strength}</p>
-                <p>Agility: ${fighter.agility}</p>
+                <p>Price: {fighter.price}</p>
+                <p>Strength: {fighter.strength}</p>
+                <p>Agility: {fighter.agility}</p>
+                <button onClick={() => handleRemoveFighter(fighter)}>Remove</button>
               </li>
             ))}
           </ul>
@@ -136,8 +156,8 @@ const App = () => {
             <img src={fighter.img} alt={fighter.name} />
             <h3>{fighter.name}</h3>
             <p>Price: ${fighter.price}</p>
-            <p>Strength: ${fighter.strength}</p>
-            <p>Agility: ${fighter.agility}</p>
+            <p>Strength: {fighter.strength}</p>
+            <p>Agility: {fighter.agility}</p>
             <button onClick={() => handleAddFighter(fighter)}>Add</button>
           </li>
         ))}
